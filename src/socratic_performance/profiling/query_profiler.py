@@ -1,9 +1,9 @@
 """Query Profiler - Database query profiling and performance monitoring."""
 
+import functools
 import logging
 import time
 from typing import Any, Callable, Dict
-import functools
 
 logger = logging.getLogger(__name__)
 
