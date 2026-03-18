@@ -12,18 +12,18 @@ logger = logging.getLogger(__name__)
 class TTLCache:
     """Function result cache with time-to-live expiration"""
 
-    def __init__(self, ttl_minutes: int = 5):
+    def __init__(self, ttl_minutes: int = 5) -> None:
         self._ttl = timedelta(minutes=ttl_minutes)
         self._cache: Dict[Any, Tuple[Any, datetime]] = {}
         self._hits = 0
         self._misses = 0
         self._lock = threading.RLock()
 
-    def __call__(self, func: Callable) -> Callable:
+    def __call__(self, func: Callable[..., Any]) -> Callable[..., Any]:
         """Wrap function with caching"""
 
         @functools.wraps(func)
-        def wrapper(*args, **kwargs):
+        def wrapper(*args: Any, **kwargs: Any) -> Any:
             try:
                 key = (args, tuple(sorted(kwargs.items())))
             except TypeError:
@@ -46,11 +46,11 @@ class TTLCache:
 
             return result
 
-        wrapper.cache_clear = self.clear
-        wrapper.cache_stats = self.stats
+        wrapper.cache_clear = self.clear  # type: ignore[attr-defined]
+        wrapper.cache_stats = self.stats  # type: ignore[attr-defined]
         return wrapper
 
-    def clear(self):
+    def clear(self) -> None:
         """Clear cache"""
         with self._lock:
             self._cache.clear()

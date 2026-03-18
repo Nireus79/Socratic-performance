@@ -11,15 +11,15 @@ logger = logging.getLogger(__name__)
 class QueryProfiler:
     """Profile database queries for performance optimization"""
 
-    def __init__(self):
-        self.queries = []
+    def __init__(self) -> None:
+        self.queries: list[Dict[str, Any]] = []
         logger.debug("QueryProfiler initialized")
 
-    def profile(self, func: Callable) -> Callable:
+    def profile(self, func: Callable[..., Any]) -> Callable[..., Any]:
         """Decorator to profile function execution"""
 
         @functools.wraps(func)
-        def wrapper(*args, **kwargs):
+        def wrapper(*args: Any, **kwargs: Any) -> Any:
             start = time.time()
             result = func(*args, **kwargs)
             elapsed = (time.time() - start) * 1000  # ms
@@ -55,7 +55,7 @@ class QueryProfiler:
             ],
         }
 
-    def reset(self):
+    def reset(self) -> None:
         """Reset profiling data"""
         self.queries.clear()
         logger.info("QueryProfiler reset")
