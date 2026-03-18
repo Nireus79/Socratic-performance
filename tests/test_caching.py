@@ -1,7 +1,5 @@
 """Tests for performance caching modules."""
 
-import pytest
-
 
 class TestCaching:
     """Test cases for caching functionality."""
