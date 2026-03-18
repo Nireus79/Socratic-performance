@@ -21,6 +21,7 @@ class TTLCache:
 
     def __call__(self, func: Callable) -> Callable:
         """Wrap function with caching"""
+
         @functools.wraps(func)
         def wrapper(*args, **kwargs):
             try:

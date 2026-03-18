@@ -17,6 +17,7 @@ class QueryProfiler:
 
     def profile(self, func: Callable) -> Callable:
         """Decorator to profile function execution"""
+
         @functools.wraps(func)
         def wrapper(*args, **kwargs):
             start = time.time()
@@ -49,7 +50,9 @@ class QueryProfiler:
             "avg_ms": round(sum(times) / len(times), 2),
             "min_ms": min(times),
             "max_ms": max(times),
-            "slowest_queries": sorted(self.queries, key=lambda x: x["elapsed_ms"], reverse=True)[:5],
+            "slowest_queries": sorted(self.queries, key=lambda x: x["elapsed_ms"], reverse=True)[
+                :5
+            ],
         }
 
     def reset(self):
