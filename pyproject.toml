@@ -1,0 +1,89 @@
+[build-system]
+requires = ["setuptools>=65.0", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "socratic-performance"
+version = "0.1.0"
+description = "Performance monitoring and caching utilities for AI systems"
+readme = "README.md"
+license = "MIT"
+authors = [
+    {name = "Socratic Team", email = "team@socratic.dev"}
+]
+keywords = [
+    "performance",
+    "monitoring",
+    "caching",
+    "profiling",
+    "ai",
+    "optimization",
+]
+classifiers = [
+    "Development Status :: 3 - Alpha",
+    "Intended Audience :: Developers",
+    "License :: OSI Approved :: MIT License",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.8",
+    "Programming Language :: Python :: 3.9",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+]
+requires-python = ">=3.8"
+
+dependencies = []
+
+[project.optional-dependencies]
+dev = [
+    "pytest>=7.0",
+    "pytest-asyncio>=0.21.0",
+    "pytest-cov>=4.0",
+    "black>=23.0",
+    "ruff>=0.1.0",
+    "mypy>=1.0",
+]
+
+[project.urls]
+Homepage = "https://github.com/Nireus79/Socratic-performance"
+Repository = "https://github.com/Nireus79/Socratic-performance"
+Documentation = "https://github.com/Nireus79/Socratic-performance#readme"
+Issues = "https://github.com/Nireus79/Socratic-performance/issues"
+
+[tool.setuptools]
+package-dir = {"" = "src"}
+
+[tool.setuptools.packages]
+find = {where = ["src"]}
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+python_files = "test_*.py"
+python_classes = "Test*"
+python_functions = "test_*"
+markers = [
+    "unit: Unit tests",
+    "integration: Integration tests",
+]
+addopts = "-v --strict-markers"
+
+[tool.black]
+line-length = 100
+target-version = ["py38"]
+
+[tool.ruff]
+line-length = 100
+target-version = "py38"
+
+[tool.ruff.lint]
+select = ["E", "F", "W", "I"]
+ignore = ["E501"]
+
+[tool.mypy]
+python_version = "3.10"
+warn_return_any = false
+warn_unused_configs = true
+disallow_untyped_defs = false
+disallow_incomplete_defs = false
+ignore_missing_imports = true
+follow_imports = "silent"
