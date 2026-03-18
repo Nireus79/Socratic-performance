@@ -45,6 +45,10 @@ result1 = compute_something(10)  # Computed
 result2 = compute_something(10)  # Cached (5 min)
 ```
 
+## Documentation
+
+- **[Performance Profiling Guide](docs/PERFORMANCE_PROFILING.md)** - Complete guide to performance profiling, query optimization, metrics collection, and bottleneck identification
+
 ## License
 
 MIT
