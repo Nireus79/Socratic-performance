@@ -31,7 +31,9 @@ classifiers = [
 ]
 requires-python = ">=3.8"
 
-dependencies = []
+dependencies = [
+    "pydantic>=2.0",
+]
 
 [project.optional-dependencies]
 dev = [
