@@ -18,7 +18,7 @@ class ExecutionMetric(BaseModel):
     name: str = Field(..., description="Operation name")
     duration_ms: float = Field(..., description="Duration in milliseconds")
     timestamp: float = Field(..., description="Execution timestamp")
-    error: Optional[str] = Field(None, description="Error message if failed")
+    error: Optional[str] = Field(default=None, description="Error message if failed")
 
 
 class QueryProfiler:
@@ -43,7 +43,7 @@ class QueryProfiler:
         self.ttl_minutes = ttl_minutes
         self._executions: Dict[str, List[float]] = {}  # For backward compatibility
 
-    def profile(self, func: Callable) -> Callable:
+    def profile(self, func: Callable[..., Any]) -> Callable[..., Any]:
         """
         Decorator to profile a function.
 
@@ -54,7 +54,7 @@ class QueryProfiler:
             Decorated function
         """
         @wraps(func)
-        def wrapper(*args, **kwargs):
+        def wrapper(*args: Any, **kwargs: Any) -> Any:
             operation_name = func.__name__
             start_time = time.time()
 

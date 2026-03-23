@@ -2,7 +2,7 @@
 Performance metrics collection and reporting.
 """
 
-from typing import Any, Dict
+from typing import Any, Dict, Optional
 
 from pydantic import BaseModel, Field
 
@@ -31,15 +31,15 @@ class MetricsCollector:
     - System resources
     """
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize metrics collector."""
         self.metrics_history: list[Dict[str, Any]] = []
 
     def collect(
         self,
-        profiler_stats: Dict[str, Any] = None,
-        cache_stats: Dict[str, Any] = None,
-        system_stats: Dict[str, Any] = None
+        profiler_stats: Optional[Dict[str, Any]] = None,
+        cache_stats: Optional[Dict[str, Any]] = None,
+        system_stats: Optional[Dict[str, Any]] = None
     ) -> PerformanceMetrics:
         """
         Collect metrics from various sources.
