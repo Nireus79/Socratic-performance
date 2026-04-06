@@ -27,24 +27,31 @@ class TTLCache:
             try:
                 key = (args, tuple(sorted(kwargs.items())))
             except TypeError:
+                # Unhashable arguments - skip cache
+                logger.debug(f"Unhashable arguments to {func.__name__}, skipping cache")
                 return func(*args, **kwargs)
 
-            with self._lock:
-                if key in self._cache:
-                    result, timestamp = self._cache[key]
-                    if datetime.now() - timestamp < self._ttl:
-                        self._hits += 1
-                        return result
-                    else:
-                        del self._cache[key]
+            try:
+                with self._lock:
+                    if key in self._cache:
+                        result, timestamp = self._cache[key]
+                        if datetime.now() - timestamp < self._ttl:
+                            self._hits += 1
+                            return result
+                        else:
+                            del self._cache[key]
 
-            result = func(*args, **kwargs)
+                result = func(*args, **kwargs)
 
-            with self._lock:
-                self._cache[key] = (result, datetime.now())
-                self._misses += 1
+                with self._lock:
+                    self._cache[key] = (result, datetime.now())
+                    self._misses += 1
 
-            return result
+                return result
+            except TypeError as e:
+                # Key is unhashable (shouldn't happen given try above, but safety net)
+                logger.debug(f"Cache key error in {func.__name__}: {e}, skipping cache")
+                return func(*args, **kwargs)
 
         wrapper.cache_clear = self.clear  # type: ignore[attr-defined]
         wrapper.cache_stats = self.stats  # type: ignore[attr-defined]
