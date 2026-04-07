@@ -124,9 +124,10 @@ class TestTTLCache:
 
     def test_cache_stats(self):
         """Test cache statistics tracking."""
+
         @cached(ttl_minutes=5)
         def square(x):
-            return x ** 2
+            return x**2
 
         # Generate some hits and misses
         square(1)  # miss
@@ -142,6 +143,7 @@ class TestTTLCache:
 
     def test_cache_unhashable_args(self):
         """Test function with unhashable arguments raises TypeError."""
+
         @cached(ttl_minutes=5)
         def process_list(items):
             return sum(items)
@@ -347,6 +349,7 @@ class TestCacheDecorator:
 
     def test_cached_decorator_default_ttl(self):
         """Test cached decorator uses default TTL."""
+
         @cached()
         def func(x):
             return x
@@ -356,6 +359,7 @@ class TestCacheDecorator:
 
     def test_cached_decorator_custom_ttl(self):
         """Test cached decorator with custom TTL."""
+
         @cached(ttl_minutes=1)
         def func(x):
             return x
@@ -365,6 +369,7 @@ class TestCacheDecorator:
 
     def test_cached_preserves_function_name(self):
         """Test decorator preserves function metadata."""
+
         @cached(ttl_minutes=5)
         def my_function(x):
             """My docstring"""

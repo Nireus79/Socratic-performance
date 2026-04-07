@@ -39,7 +39,7 @@ class MetricsCollector:
         self,
         profiler_stats: Optional[Dict[str, Any]] = None,
         cache_stats: Optional[Dict[str, Any]] = None,
-        system_stats: Optional[Dict[str, Any]] = None
+        system_stats: Optional[Dict[str, Any]] = None,
     ) -> PerformanceMetrics:
         """
         Collect metrics from various sources.

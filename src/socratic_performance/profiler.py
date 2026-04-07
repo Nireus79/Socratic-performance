@@ -53,6 +53,7 @@ class QueryProfiler:
         Returns:
             Decorated function
         """
+
         @wraps(func)
         def wrapper(*args: Any, **kwargs: Any) -> Any:
             operation_name = func.__name__
@@ -63,9 +64,7 @@ class QueryProfiler:
                 duration = (time.time() - start_time) * 1000  # Convert to ms
 
                 metric = ExecutionMetric(
-                    name=operation_name,
-                    duration_ms=duration,
-                    timestamp=start_time
+                    name=operation_name, duration_ms=duration, timestamp=start_time
                 )
 
                 self._record_metric(operation_name, metric)
@@ -76,10 +75,7 @@ class QueryProfiler:
                 duration = (time.time() - start_time) * 1000
 
                 metric = ExecutionMetric(
-                    name=operation_name,
-                    duration_ms=duration,
-                    timestamp=start_time,
-                    error=str(e)
+                    name=operation_name, duration_ms=duration, timestamp=start_time, error=str(e)
                 )
 
                 self._record_metric(operation_name, metric)
