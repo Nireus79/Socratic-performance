@@ -1,7 +1,9 @@
 """Tests for performance caching modules."""
 
 import time
+
 import pytest
+
 from socratic_performance import TTLCache, cached
 
 
@@ -108,18 +110,18 @@ class TestTTLCache:
             return x * 2
 
         # Call and cache
-        result1 = double(5)
+        double(5)
         assert call_count[0] == 1
 
         # Use cache
-        result2 = double(5)
+        double(5)
         assert call_count[0] == 1
 
         # Clear cache
         double.cache_clear()
 
         # Should execute again
-        result3 = double(5)
+        double(5)
         assert call_count[0] == 2
 
     def test_cache_stats(self):
@@ -274,8 +276,9 @@ class TestQueryProfiler:
 
     def test_profiler_slow_query_warning(self, caplog):
         """Test profiler logs slow queries."""
-        from socratic_performance import QueryProfiler
         import logging
+
+        from socratic_performance import QueryProfiler
 
         caplog.set_level(logging.WARNING)
         profiler = QueryProfiler()
