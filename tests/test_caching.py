@@ -142,16 +142,15 @@ class TestTTLCache:
         assert "hit_rate" in stats
 
     def test_cache_unhashable_args(self):
-        """Test function with unhashable arguments raises TypeError."""
+        """Test function with unhashable arguments skips cache."""
 
         @cached(ttl_minutes=5)
         def process_list(items):
             return sum(items)
 
-        # List is unhashable and should raise TypeError
-        # This is current behavior - could be improved to gracefully skip cache
-        with pytest.raises(TypeError):
-            process_list([1, 2, 3])
+        # List is unhashable, cache is skipped gracefully
+        result = process_list([1, 2, 3])
+        assert result == 6  # Function still executes, just bypasses cache
 
     def test_cache_with_none_result(self):
         """Test caching of None return values."""
