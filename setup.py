@@ -4,7 +4,7 @@ from setuptools import setup, find_packages
 
 setup(
     name="socratic-performance",
-    version="0.1.2",
+    version="0.1.3",
     description="Performance monitoring and caching utilities for AI systems",
     author="Socratic Team",
     author_email="team@socratic.dev",
