@@ -51,7 +51,7 @@ class SystemMonitor:
         """
         if not psutil:
             return 0.0
-        return psutil.virtual_memory().percent
+        return cast(float, psutil.virtual_memory().percent)
 
     def get_disk_usage(self) -> float:
         """
@@ -62,7 +62,7 @@ class SystemMonitor:
         """
         if not psutil:
             return 0.0
-        return psutil.disk_usage('/').percent
+        return cast(float, psutil.disk_usage('/').percent)
 
     def get_network_stats(self) -> Dict[str, int]:
         """
