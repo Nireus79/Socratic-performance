@@ -6,7 +6,7 @@ import logging
 import statistics
 from collections import defaultdict
 from datetime import datetime
-from typing import Any, Dict, List
+from typing import Any, Dict, List, cast
 
 try:
     import psutil
@@ -40,7 +40,7 @@ class SystemMonitor:
         """
         if not psutil:
             return 0.0
-        return psutil.cpu_percent(interval=0.1)
+        return cast(float, psutil.cpu_percent(interval=0.1))
 
     def get_memory_usage(self) -> float:
         """
