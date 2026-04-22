@@ -1,3 +1,5 @@
+from __future__ import annotations
+
 """
 Socratic Performance - Performance Monitoring and Subscription Management
 

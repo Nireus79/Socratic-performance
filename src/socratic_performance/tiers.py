@@ -1,3 +1,5 @@
+from __future__ import annotations
+
 """Subscription tier definitions and limits."""
 
 from dataclasses import dataclass

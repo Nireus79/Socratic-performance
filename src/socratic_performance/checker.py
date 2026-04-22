@@ -1,3 +1,5 @@
+from __future__ import annotations
+
 """Subscription checking and enforcement logic."""
 
 from typing import Optional, Tuple

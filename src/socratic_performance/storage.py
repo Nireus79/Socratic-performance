@@ -1,3 +1,5 @@
+from __future__ import annotations
+
 """Storage quota management and tracking."""
 
 from typing import Optional, Tuple
