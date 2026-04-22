@@ -2,8 +2,8 @@
 
 from typing import Optional, Tuple
 
-from socratic_system.models.user import User
-from socratic_system.subscription.tiers import get_tier_limits
+# from socratic_system.models.user import User  # removed monolith dependency
+# from socratic_system.subscription.tiers import get_tier_limits  # removed monolith dependency
 
 
 class StorageQuotaManager:

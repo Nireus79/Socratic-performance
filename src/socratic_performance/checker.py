@@ -4,8 +4,8 @@ from typing import Optional, Tuple
 
 from colorama import Fore, Style
 
-from socratic_system.models.user import User
-from socratic_system.subscription.tiers import (
+# from socratic_system.models.user import User  # removed monolith dependency
+# from socratic_system.subscription.tiers import (  # removed monolith dependency
     COMMAND_FEATURE_MAP,
     FEATURE_TIER_REQUIREMENTS,
     get_tier_limits,
