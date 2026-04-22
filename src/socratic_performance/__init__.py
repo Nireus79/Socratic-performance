@@ -1,6 +1,11 @@
-"""Performance Module - Database profiling and result caching"""
+"""
+Socratic Performance - Performance Monitoring and Subscription Management
 
-from socratic_performance.caching.ttl_cache import TTLCache, cached
-from socratic_performance.profiling.query_profiler import QueryProfiler
+Extracted from Socrates v1.3.3
+"""
 
-__all__ = ["QueryProfiler", "TTLCache", "cached"]
+from .checker import SubscriptionChecker
+from .tiers import SubscriptionTier
+
+__version__ = "1.3.3"
+__all__ = ["SubscriptionChecker", "SubscriptionTier"]
