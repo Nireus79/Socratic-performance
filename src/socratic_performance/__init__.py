@@ -1,6 +1,10 @@
-"""Performance Module - Database profiling and result caching"""
+"""Performance Module - Database profiling and result caching
 
-from socratic_performance.caching.ttl_cache import TTLCache, cached
-from socratic_performance.profiling.query_profiler import QueryProfiler
+Extracted from Socrates v1.3.3
+"""
 
+from .caching.ttl_cache import TTLCache, cached
+from .profiling.query_profiler import QueryProfiler
+
+__version__ = "0.1.1"
 __all__ = ["QueryProfiler", "TTLCache", "cached"]
