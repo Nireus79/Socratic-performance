@@ -5,7 +5,6 @@ from __future__ import annotations
 from typing import Optional, Tuple
 
 
-
 class StorageQuotaManager:
     """Manages storage quotas and tracking for subscription tiers."""
 

@@ -6,6 +6,7 @@ from typing import Optional, Tuple
 
 from colorama import Fore, Style
 
+from .models import (
     COMMAND_FEATURE_MAP,
     FEATURE_TIER_REQUIREMENTS,
     get_tier_limits,
