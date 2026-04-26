@@ -11,7 +11,7 @@ from .query_profiler import QueryProfiler, QueryStats, get_profiler, profile_que
 from .tiers import TierLimits
 from .ttl_cache import TTLCache, cached
 
-__version__ = "0.3.0"
+__version__ = "0.2.1"
 __all__ = [
     "SubscriptionChecker",
     "TierLimits",

@@ -8,7 +8,9 @@ import functools
 import logging
 import threading
 from datetime import datetime, timedelta
-from typing import Any, Callable, Dict, Tuple
+from typing import Any, Callable, Dict, Tuple, TypeVar
+
+F = TypeVar("F", bound=Callable[..., Any])
 
 
 class TTLCache:
@@ -42,7 +44,7 @@ class TTLCache:
         self._lock = threading.RLock()
         self._logger = logging.getLogger("ttl_cache")
 
-    def __call__(self, func: Callable) -> Callable:
+    def __call__(self, func: F) -> F:
         """
         Wrap a function with caching.
 
@@ -54,7 +56,7 @@ class TTLCache:
         """
 
         @functools.wraps(func)
-        def wrapper(*args, **kwargs):
+        def wrapper(*args: Any, **kwargs: Any) -> Any:
             # Create cache key from args/kwargs
             try:
                 key = (args, tuple(sorted(kwargs.items())))
@@ -104,7 +106,7 @@ class TTLCache:
         wrapper.cache_info = self.info  # type: ignore[attr-defined]
         wrapper._cache = self  # type: ignore[attr-defined]
 
-        return wrapper
+        return wrapper  # type: ignore[return-value]
 
     def clear(self) -> None:
         """Clear all cached results."""
