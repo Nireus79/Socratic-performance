@@ -2,7 +2,12 @@ from __future__ import annotations
 
 """Storage quota management and tracking."""
 
-from typing import Optional, Tuple
+from typing import TYPE_CHECKING, Optional, Tuple
+
+from .tiers import get_tier_limits
+
+if TYPE_CHECKING:
+    from socratic_nexus.models import User
 
 
 class StorageQuotaManager:

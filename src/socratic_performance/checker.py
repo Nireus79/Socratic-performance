@@ -2,15 +2,18 @@ from __future__ import annotations
 
 """Subscription checking and enforcement logic."""
 
-from typing import Optional, Tuple
+from typing import TYPE_CHECKING, Optional, Tuple
 
 from colorama import Fore, Style
 
-from .models import (
+from .tiers import (
     COMMAND_FEATURE_MAP,
     FEATURE_TIER_REQUIREMENTS,
     get_tier_limits,
 )
+
+if TYPE_CHECKING:
+    from socratic_nexus.models import User
 
 
 class SubscriptionChecker:
