@@ -7,7 +7,7 @@ Extracted from Socrates v1.3.3
 """
 
 from .checker import SubscriptionChecker
-from .tiers import SubscriptionTier
+from .tiers import TierLimits
 
 __version__ = "1.3.3"
-__all__ = ["SubscriptionChecker", "SubscriptionTier"]
+__all__ = ["SubscriptionChecker", "TierLimits"]

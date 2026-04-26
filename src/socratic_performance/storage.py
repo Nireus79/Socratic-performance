@@ -2,7 +2,7 @@ from __future__ import annotations
 
 """Storage quota management and tracking."""
 
-from typing import TYPE_CHECKING, Optional, Tuple
+from typing import TYPE_CHECKING, Any, Dict, Optional, Tuple
 
 from .tiers import get_tier_limits
 
@@ -42,7 +42,7 @@ class StorageQuotaManager:
     @staticmethod
     def can_upload_document(
         user: User,
-        database,
+        database: Any,
         document_size_bytes: int,
         testing_mode: bool = False,
     ) -> Tuple[bool, Optional[str]]:
@@ -95,7 +95,7 @@ class StorageQuotaManager:
         return True, None
 
     @staticmethod
-    def calculate_user_storage_usage(username: str, database) -> int:
+    def calculate_user_storage_usage(username: str, database: Any) -> int:
         """
         Calculate total storage usage for a user across all projects in bytes.
 
@@ -136,7 +136,7 @@ class StorageQuotaManager:
             return 0
 
     @staticmethod
-    def get_storage_usage_report(username: str, database) -> dict:
+    def get_storage_usage_report(username: str, database: Any) -> Dict[str, Any]:
         """
         Get detailed storage usage report for a user.
 
