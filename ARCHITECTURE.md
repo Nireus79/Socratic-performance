@@ -1,211 +1,286 @@
 # socratic-performance Architecture
 
-Performance monitoring and optimization system for Socratic interactions
+Performance monitoring, query profiling, and caching utilities for Socratic systems.
 
-## System Architecture
-
-socratic-performance provides comprehensive performance visibility and optimization recommendations for Socratic systems.
-
-### Component Overview
+## System Overview
 
 ```
-Application Instrumentation
+Application Layer
     |
-    +-- Metrics Collection
-    +-- Event Tracking
-    +-- Trace Generation
+    +-- Query Execution (sync/async)
+    |   |
+    |   +-- QueryProfiler (decorator-based)
+    |   |
+    |   +-- TTLCache (result caching)
     |
-Metrics Aggregation
-    |
-    +-- Time Series DB
-    +-- Aggregation Engine
-    +-- Alert System
-    |
-Analysis Engine
-    |
-    +-- Pattern Analyzer
-    +-- Anomaly Detector
-    +-- Bottleneck Identifier
-    |
-Optimization System
-    |
-    +-- Profile Analyzer
-    +-- Recommendation Engine
-    +-- Tuning Advisor
-    |
-Reporting & Dashboards
-    |
-    +-- Real-time Dashboards
-    +-- Historical Reports
-    +-- Performance Trends
+    +-- Metrics & Statistics
+    |   |
+    |   +-- Performance Tracking
+    |   +-- Slow Query Detection
+    |   +-- Cache Statistics
 ```
 
 ## Core Components
 
-### 1. Metrics Collection
+### 1. QueryProfiler
 
-**Gathers performance data**:
-- Latency measurement
-- Throughput tracking
-- Resource utilization
-- Error rates
-- Custom metrics
+**High-level query performance tracking**:
+- Decorator-based instrumentation
+- Supports both sync and async functions
+- Automatic execution time tracking
+- Slow query detection and logging
+- Performance statistics aggregation
+- Global profiler instance available
 
-### 2. Monitor
+**Key Classes:**
+- `QueryProfiler`: Main profiler class with configurable thresholds
+- `QueryStats`: Per-query statistics container
+- Module functions: `get_profiler()`, `profile_query()`
 
-**Real-time monitoring**:
-- Active health checks
-- Threshold alerting
-- Anomaly detection
-- Event correlation
-- Real-time visualization
+**Features:**
+- Tracks: count, total time, min/max time, averages
+- Identifies slow executions and errors
+- Generates performance summaries
+- Supports manual tracking without decorator
 
-### 3. Profiler
+### 2. TTLCache
 
-**Code-level profiling**:
-- Function execution time
-- Memory allocation
-- CPU usage
-- I/O operations
-- Call stack analysis
+**Time-based result caching with automatic expiration**:
+- Thread-safe caching using RLock
+- Configurable time-to-live (TTL)
+- Graceful handling of unhashable arguments
+- Cache statistics and hit rate tracking
+- Cache management methods
 
-### 4. Optimizer
+**Key Classes:**
+- `TTLCache`: Main cache decorator class
+- Decorator factory: `cached(ttl_minutes)`
 
-**Optimization recommendations**:
-- Identify bottlenecks
-- Suggest improvements
-- Estimate impact
-- Track optimization results
-- Continuous tuning
+**Features:**
+- Automatic cache key generation from args/kwargs
+- Expired entry removal
+- Hit/miss tracking
+- Cache clear and reset operations
 
-## Data Flow
+## Data Structures
 
-### Monitoring Pipeline
+### QueryStats
 
-1. **Instrumentation**
-   - Insert measurement points
-   - Collect raw metrics
-   - Tag with metadata
-   - Timestamp events
+```python
+{
+    "name": str,                    # Query name
+    "count": int,                   # Total executions
+    "avg_time_ms": float,           # Average execution time
+    "min_time_ms": float,           # Minimum execution time
+    "max_time_ms": float,           # Maximum execution time
+    "total_time_ms": float,         # Total execution time
+    "slow_count": int,              # Number of slow executions
+    "slow_percentage": float,       # Percentage that were slow
+    "error_count": int,             # Number of errors
+    "last_executed_at": float,      # Unix timestamp of last execution
+}
+```
 
-2. **Aggregation**
-   - Aggregate metrics
-   - Compute percentiles
-   - Generate time series
-   - Store in database
+### CacheStats
 
-3. **Analysis**
-   - Detect patterns
-   - Identify anomalies
-   - Calculate trends
-   - Generate alerts
+```python
+{
+    "hits": int,                    # Cache hits
+    "misses": int,                  # Cache misses
+    "total_calls": int,             # Total cache lookups
+    "hit_rate": str,                # Percentage hit rate
+    "cache_size": int,              # Number of cached entries
+    "ttl_minutes": float,           # Time-to-live in minutes
+}
+```
 
-4. **Visualization**
-   - Create dashboards
-   - Generate reports
-   - Render visualizations
-   - Enable exploration
+## Execution Flow
 
-### Optimization Pipeline
+### Query Profiling
 
-1. **Data Collection**
-   - Gather performance data
-   - Profile applications
-   - Identify patterns
-   - Collect baselines
+1. **Decorator Application**
+   - `@profiler.profile("query_name")`
+   - Creates wrapper function
+   - Initializes QueryStats if new
 
-2. **Analysis**
-   - Find bottlenecks
-   - Estimate impact
-   - Rank opportunities
-   - Calculate ROI
+2. **Function Execution**
+   - Record start time
+   - Execute original function (sync or async)
+   - Calculate duration
+   - Determine if slow (duration > threshold)
 
-3. **Recommendations**
-   - Generate suggestions
-   - Document rationale
-   - Estimate improvements
-   - Provide implementation guides
+3. **Statistics Update**
+   - Update count, timing metrics
+   - Record slow/error flags
+   - Update last execution time
 
-4. **Implementation**
-   - Apply optimizations
-   - Monitor impact
-   - Validate improvements
-   - Document results
+4. **Logging**
+   - Debug: Normal executions
+   - Warning: Slow queries
+   - Error: Failed queries
 
-## Metrics Categories
+### Cache Operations
 
-### Response Metrics
-- Latency (p50, p95, p99)
-- Throughput (requests/sec)
-- Error rates
-- Success rates
+1. **Cache Lookup**
+   - Generate cache key from args/kwargs
+   - Check if key exists and not expired
+   - Return cached result (cache hit)
+   - Or proceed to compute (cache miss)
 
-### Resource Metrics
-- CPU utilization
-- Memory usage
-- Disk I/O
-- Network bandwidth
+2. **Cache Store**
+   - Compute function result
+   - Store in cache with timestamp
+   - Update hit/miss counters
 
-### Business Metrics
-- Conversion rates
-- User engagement
-- Feature usage
-- Cost per transaction
+3. **Expiration**
+   - Check age: `current_time - timestamp < ttl`
+   - Remove expired entries on access
+   - Optional manual cleanup
 
-## Optimization Opportunities
+## Thread Safety
 
-### Caching
-- Query result caching
-- Object caching
-- Distributed caching
-- Cache invalidation
+### QueryProfiler
+- Uses internal dictionary for stats
+- Dictionary operations are atomic in Python
+- Safe for concurrent access from multiple threads
 
-### Indexing
-- Database indexes
-- Full-text search indexes
-- Graph indexes
-- Spatial indexes
+### TTLCache
+- Uses `threading.RLock` for synchronization
+- Protects cache dictionary and counters
+- Computes function outside lock to avoid blocking
 
-### Parallelization
-- Concurrent processing
-- Batch operations
-- Distributed execution
-- Async operations
+## Performance Characteristics
 
-### Algorithm Optimization
-- Time complexity reduction
-- Memory efficiency
-- Data structure optimization
-- Algorithm selection
+### QueryProfiler
+- **Time Overhead**: ~1-2 microseconds per call (timing only)
+- **Memory**: Minimal - one QueryStats object per unique query
+- **Scalability**: O(1) lookups, supports thousands of tracked queries
 
-## Integration Points
+### TTLCache
+- **Time Overhead**: ~5-10 microseconds for cache lookup/store
+- **Memory**: One entry per unique arguments combination
+- **Scalability**: O(1) cache lookups via hash table
 
-### socrates-nexus
-- Model switching optimization
-- Provider selection tuning
-- Latency reduction
+## Integration with Socratic
 
-### Application Monitoring
-- Integration with APM tools
-- Prometheus metrics export
-- OpenTelemetry support
+### With socratic-nexus
+- Profile model invocation performance
+- Identify slow API calls
+- Cache model responses
 
-## Alerting Strategy
+### With socratic-analyzer
+- Track analysis query performance
+- Identify bottlenecks in analysis pipelines
 
-- Threshold-based alerts
-- Anomaly-based alerts
-- Trend-based alerts
-- Composite alerts
-- Alert routing
+### With socratic-knowledge
+- Profile knowledge base queries
+- Cache knowledge lookups
 
-## Dashboarding
+### With Socrates (main)
+- Extract performance metrics for reporting
+- Monitor query performance across ecosystem
 
-- Real-time metrics
-- Historical trends
-- Comparative analysis
-- Custom widgets
-- Drill-down capabilities
+## Configuration
+
+### QueryProfiler Configuration
+
+```python
+profiler = QueryProfiler(
+    slow_query_threshold_ms=100.0  # Customize per use case
+)
+
+# Or override per query
+@profiler.profile("fast_query", slow_query_threshold_ms=50)
+def fast_operation():
+    pass
+```
+
+### TTLCache Configuration
+
+```python
+cache = TTLCache(ttl_minutes=5)       # Instance decorator
+cached(ttl_minutes=10)                 # Factory function
+```
+
+## Error Handling
+
+### QueryProfiler
+- Catches exceptions during execution
+- Records error in statistics
+- Logs error with duration
+- Re-raises exception
+
+### TTLCache
+- Gracefully skips caching for unhashable arguments
+- Logs warnings for skipped cache operations
+- Returns function result without caching
+
+## Usage Patterns
+
+### Pattern 1: Query Monitoring
+```python
+profiler = QueryProfiler()
+
+@profiler.profile("slow_check")
+async def check_something():
+    pass
+
+# Monitor over time
+stats = profiler.get_stats()
+```
+
+### Pattern 2: Result Caching
+```python
+@cached(ttl_minutes=5)
+def expensive_operation(param):
+    return compute(param)
+
+# Automatic caching and expiration
+result = expensive_operation("key")
+```
+
+### Pattern 3: Combined
+```python
+profiler = QueryProfiler()
+cache = TTLCache()
+
+@cache
+@profiler.profile("operation")
+def my_operation(x):
+    return compute(x)
+
+# Profile execution time, cache results
+```
+
+## Monitoring & Debugging
+
+### Query Profiling
+- `profiler.print_summary()` - Print performance report
+- `profiler.get_slow_queries()` - Find problematic queries
+- `profiler.get_slowest_queries()` - Identify bottlenecks
+- `profiler.get_stats()` - Raw statistics
+
+### Cache Monitoring
+- `function.cache_stats()` - Hit/miss rates
+- `function.cache_info()` - Human-readable cache status
+- `function.cache_clear()` - Clear cache when needed
+
+## Future Enhancements
+
+1. **Metrics Export**
+   - Prometheus metrics format
+   - OpenTelemetry integration
+
+2. **Advanced Caching**
+   - Distributed cache support
+   - Cache warming strategies
+   - Eviction policies
+
+3. **Distributed Profiling**
+   - Collect metrics across services
+   - Distributed tracing support
+   - Aggregated dashboards
 
 ---
 
-Part of the Socratic Ecosystem
+Part of the Socratic Ecosystem v1.3.3+
