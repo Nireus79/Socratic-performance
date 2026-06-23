@@ -2,7 +2,7 @@ from __future__ import annotations
 
 """Subscription tier definitions and limits."""
 
-from dataclasses import dataclass, asdict
+from dataclasses import asdict, dataclass
 from typing import Optional
 
 
@@ -26,7 +26,6 @@ class TierLimits:
 
     def to_dict(self) -> dict:
         """Serialize to dictionary."""
-        from dataclasses import asdict
 
         return asdict(self)
 
