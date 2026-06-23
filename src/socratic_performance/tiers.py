@@ -8,17 +8,6 @@ from typing import Optional
 
 @dataclass
 class TierLimits:
-    @staticmethod
-    def from_dict(data: dict) -> "TierLimits":
-        """Deserialize from dictionary."""
-        return TierLimits(**data)
-
-    def to_dict(self) -> dict:
-        """Serialize to dictionary."""
-        from dataclasses import asdict
-        return asdict(self)
-
-
     name: str
     monthly_cost: float
     max_projects: Optional[int]  # None = unlimited
@@ -29,6 +18,16 @@ class TierLimits:
     advanced_analytics: bool
     code_generation: bool
     maturity_tracking: bool
+
+    @staticmethod
+    def from_dict(data: dict) -> "TierLimits":
+        """Deserialize from dictionary."""
+        return TierLimits(**data)
+
+    def to_dict(self) -> dict:
+        """Serialize to dictionary."""
+        from dataclasses import asdict
+        return asdict(self)
 
 
 # Tier definitions - All tiers have full feature access, limited only by quotas
