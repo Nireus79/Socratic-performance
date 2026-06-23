@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "socratic-performance"
-version = "0.2.1"
+version = "0.2.2"
 description = "Performance monitoring and caching utilities for AI systems"
 readme = "README.md"
 license = "MIT"
@@ -87,7 +87,7 @@ select = ["E", "F", "W", "I"]
 ignore = ["E402", "E501"]
 
 [tool.mypy]
-python_version = "3.10"
+python_version = "0.2.2"
 warn_return_any = false
 warn_unused_configs = true
 disallow_untyped_defs = false
