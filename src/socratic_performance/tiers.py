@@ -27,6 +27,7 @@ class TierLimits:
     def to_dict(self) -> dict:
         """Serialize to dictionary."""
         from dataclasses import asdict
+
         return asdict(self)
 
 
