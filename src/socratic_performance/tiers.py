@@ -2,13 +2,22 @@ from __future__ import annotations
 
 """Subscription tier definitions and limits."""
 
-from dataclasses import dataclass
+from dataclasses import dataclass, asdict
 from typing import Optional
 
 
 @dataclass
 class TierLimits:
-    """Defines limits and features for a subscription tier."""
+    @staticmethod
+    def from_dict(data: dict) -> "TierLimits":
+        """Deserialize from dictionary."""
+        return TierLimits(**data)
+
+    def to_dict(self) -> dict:
+        """Serialize to dictionary."""
+        from dataclasses import asdict
+        return asdict(self)
+
 
     name: str
     monthly_cost: float
