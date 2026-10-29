@@ -3,7 +3,7 @@ from __future__ import annotations
 """Subscription tier definitions and limits."""
 
 from dataclasses import asdict, dataclass
-from typing import Optional
+from typing import Any, Optional
 
 
 @dataclass
@@ -20,11 +20,11 @@ class TierLimits:
     maturity_tracking: bool
 
     @staticmethod
-    def from_dict(data: dict) -> "TierLimits":
+    def from_dict(data: dict[str, Any]) -> "TierLimits":
         """Deserialize from dictionary."""
         return TierLimits(**data)
 
-    def to_dict(self) -> dict:
+    def to_dict(self) -> dict[str, Any]:
         """Serialize to dictionary."""
 
         return asdict(self)
