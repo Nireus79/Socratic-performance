@@ -9,7 +9,7 @@ description = "Performance monitoring and caching utilities for AI systems"
 readme = "README.md"
 license = "MIT"
 authors = [
-    {name = "Socratic Team", email = "team@socratic.dev"}
+    {name = "Efthimios Angelopoulos", email = "Hermes_creative@proton.me"}
 ]
 keywords = [
     "performance",
